@@ -28,7 +28,10 @@ const getArticles = async (token) => {
       "Content-Type": "application/json",
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+
+        return response.ok ? response.json() : response.status
+    } )
     .then((json) => json)
     .catch((err) => console.error(err));
   return articles;

@@ -5,6 +5,7 @@ import LoginForm from './LoginForm'
 import Message from './Message'
 import ArticleForm from './ArticleForm'
 import Spinner from './Spinner'
+import * as goFetch from '../fetch';
 
 const articlesUrl = 'http://localhost:9000/api/articles'
 const loginUrl = 'http://localhost:9000/api/login'
@@ -16,12 +17,19 @@ export default function App() {
   const [currentArticleId, setCurrentArticleId] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false)
 
+  const token = localStorage.getItem('token');
+
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
-  const redirectToLogin = () => { /* ✨ implement */ }
-  const redirectToArticles = () => { /* ✨ implement */ }
+  const redirectToLogin = () => {navigate('/login') /* ✨ implement */ }
+  const redirectToArticles = () => {navigate('/articles') /* ✨ implement */ }
 
   const logout = () => {
+    if (localStorage.getItem('token')) { 
+    localStorage.removeItem('token');
+    setMessage('Goodbye!')
+    redirectToLogin();
+    }
     // ✨ implement
     // If a token is in local storage it should be removed,
     // and a message saying "Goodbye!" should be set in its proper state.
@@ -30,6 +38,15 @@ export default function App() {
   }
 
   const login = ({ username, password }) => {
+    setMessage('');
+    setSpinnerOn(true);
+    goFetch.login({username, password})
+    .then(response => {
+      setMessage(response.message);
+      setSpinnerOn(false);
+      redirectToArticles();
+    })
+
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch a request to the proper endpoint.
@@ -39,6 +56,20 @@ export default function App() {
   }
 
   const getArticles = () => {
+    setMessage('');
+    setSpinnerOn(true);
+    goFetch.getArticles(token)
+    .then(response => {
+      if (response.message) {
+      setArticles(response.articles);
+      setMessage(response.message);
+      } else if (response === 401) {
+        console.error("Resubmit for a token!");
+        redirectToLogin();
+      }
+      setSpinnerOn(false);
+    })
+    .catch(err => console.error(err))
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -50,6 +81,13 @@ export default function App() {
   }
 
   const postArticle = article => {
+    setSpinnerOn(true);
+    goFetch.addArticle(token, article)
+    .then(response => {
+      setArticles([...articles, response.article]);
+      setMessage(response.message);
+      setSpinnerOn(false);
+    })
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
@@ -57,11 +95,31 @@ export default function App() {
   }
 
   const updateArticle = ({ article_id, article }) => {
+    setSpinnerOn(true);
+    goFetch.editArticle(token, article, article_id)
+    .then(response => {
+      setArticles([
+        ...articles.filter(item => item.article_id !== article_id), response.article
+      ]);
+    
+      setMessage(response.message);
+      setSpinnerOn(false);
+    });
     // ✨ implement
     // You got this!
   }
 
   const deleteArticle = article_id => {
+    setSpinnerOn(true);
+    goFetch.editArticle(token, article_id)
+    .then(response => {
+      setArticles([
+        ...articles.filter(item => item.article_id !== article_id)
+      ]);
+    
+      setMessage(response.message);
+      setSpinnerOn(false);
+    });
     // ✨ implement
   }
 
