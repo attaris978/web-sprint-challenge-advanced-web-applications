@@ -112,7 +112,7 @@ export default function App() {
 
   const deleteArticle = article_id => {
     setSpinnerOn(true);
-    goFetch.editArticle(token, article_id)
+    goFetch.deleteArticle(token, article_id)
     .then(response => {
       setArticles([
         ...articles.filter(item => item.article_id !== article_id)
