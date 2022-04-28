@@ -21,7 +21,7 @@ export default function App() {
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
-  const redirectToLogin = () => {navigate('/login') /* ✨ implement */ }
+  const redirectToLogin = () => {navigate('/') /* ✨ implement */ }
   const redirectToArticles = () => {navigate('/articles') /* ✨ implement */ }
 
   const logout = () => {
@@ -38,6 +38,7 @@ export default function App() {
   }
 
   const login = ({ username, password }) => {
+    setCurrentArticleId();
     setMessage('');
     setSpinnerOn(true);
     goFetch.login({username, password})
@@ -94,7 +95,7 @@ export default function App() {
     // to inspect the response from the server.
   }
 
-  const updateArticle = ({ article_id, article }) => {
+  const updateArticle = ( article_id, article ) => {
     setSpinnerOn(true);
     goFetch.editArticle(token, article, article_id)
     .then(response => {
@@ -139,8 +140,19 @@ export default function App() {
           <Route path="/" element={<LoginForm login={login}/>} />
           <Route path="articles" element={
             <>
-              <ArticleForm />
-              <Articles />
+              <ArticleForm 
+              currentArticleId={currentArticleId}
+              updateArticle={updateArticle}
+              postArticle={postArticle}
+              
+              articles={articles}/>
+              <Articles getArticles={getArticles} 
+              articles={articles} 
+              redirectToLogin={redirectToLogin} 
+              token={token}
+              setCurrentArticleId={setCurrentArticleId}
+              deleteArticle={deleteArticle}
+              />
             </>
           } />
         </Routes>

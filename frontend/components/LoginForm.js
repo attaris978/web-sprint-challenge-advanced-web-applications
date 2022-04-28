@@ -20,7 +20,7 @@ export default function LoginForm(props) {
     evt.preventDefault();
     console.log(values);
     login(values)
-    .then(res => console.log(res));
+    
     // ✨ implement
   }
 
