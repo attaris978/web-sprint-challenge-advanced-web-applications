@@ -70,7 +70,8 @@ export default function App() {
       }
       setSpinnerOn(false);
     })
-    .catch(err => console.error(err))
+    .catch(err => console.error(err));
+    setSpinnerOn(false);
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
@@ -127,7 +128,7 @@ export default function App() {
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <React.StrictMode>
-      <Spinner />
+      <Spinner spinnerOn={spinnerOn} />
       <Message message={message}/>
       <button id="logout" onClick={logout}>Logout from app</button>
       <div id="wrapper" style={{ opacity: spinnerOn ? "0.25" : "1" }}> {/* <-- do not change this line */}
