@@ -24,8 +24,8 @@ const StyledSpinner = styled.div`
 export default function Spinner( {spinnerOn} ) {
   if (!spinnerOn) return null
   return (
-    <StyledSpinner id="spinner">
-      <h3>&nbsp;.</h3>&nbsp;&nbsp;&nbsp;Please wait...
+    <StyledSpinner  id="spinner">
+      <h3>Please wait...</h3>
     </StyledSpinner>
   )
 }
