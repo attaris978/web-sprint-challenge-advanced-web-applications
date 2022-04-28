@@ -71,7 +71,7 @@ export default function App() {
       setSpinnerOn(false);
     })
     .catch(err => console.error(err));
-    setSpinnerOn(false);
+    // setSpinnerOn(false);
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch an authenticated request to the proper endpoint.
