@@ -6,7 +6,7 @@ const initialFormValues = { title: '', text: '', topic: '' }
 export default function ArticleForm(props) {
   const [values, setValues] = useState(initialFormValues)
   // ✨ where are my props? Destructure them here
-  const {articles, currentArticleId, updateArticle, postArticle} = props;
+  const {articles, setCurrentArticleId, currentArticleId, updateArticle, postArticle} = props;
   useEffect(() => {
     currentArticleId ? 
     setValues(articles.find(val => val.article_id === currentArticleId)) :
@@ -67,7 +67,7 @@ export default function ArticleForm(props) {
       </select>
       <div className="button-group">
         <button disabled={isDisabled()} id="submitArticle">Submit</button>
-        <button onClick={Function.prototype}>Cancel edit</button>
+        <button onClick={() => setCurrentArticleId(null)}>Cancel edit</button>
       </div>
     </form>
   )
